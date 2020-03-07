@@ -7,6 +7,10 @@ win.bgcolor("black")
 win.setup(width=800, height=600)
 win.tracer(0)
 
+#Points
+score_a =0
+score_b =0
+
 #Paddle A
 pda = turtle.Turtle()
 pda.speed(0)
@@ -35,36 +39,45 @@ ball.penup()
 ball.goto(0,0)
 ball.dx = 1
 ball.dy = -1
+pixBol = 20
 
-
-
+# Score
+score = turtle.Turtle()
+score.speed(0)
+score.color("white")
+score.penup()
+score.hideturtle()
+score.goto(2,260)
 
 # Function
 #--A
 def pda_up():
     y = pda.ycor()
-    y += 20
+    y += pixBol
     pda.sety(y)
 
 def pda_down():
     y = pda.ycor()
-    y -= 20
+    y -= pixBol
     pda.sety(y)
 
 #--B
 def pdb_up():
     y = pdb.ycor()
-    y += 20
+    y += pixBol
     pdb.sety(y)
 
 def pdb_down():
     y = pdb.ycor()
-    y -= 20
+    y -= pixBol
     pdb.sety(y)
 
+def update_score():
+    score.clear()
+    score.write("Player A: {}  Player B: {}".format(score_a,score_b),align="center", font=("Courier", 24, "normal"))
 
 
-
+update_score()
 
 # Keyboard binding
 win.listen()
@@ -96,11 +109,16 @@ while True:
     if ball.xcor() > 390:
         ball.goto(0,0)
         ball.dx *= -1
+        score_a += 1
+        update_score()
 
     if ball.xcor() < -390:
         ball.goto(0,0)
-        ball.dx *= -1        
-    
+        ball.dx *= -1
+        score_b +=1
+        update_score()
+
+    #Collisions
     if (ball.xcor() > 340 and ball.xcor() < 350) and (ball.ycor() < pdb.ycor() + 40 and ball.ycor() > pdb.ycor() -40 ):
         ball.setx(340)
         ball.dx *= -1
